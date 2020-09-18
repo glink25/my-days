@@ -1,15 +1,17 @@
 <template>
-  <div class="days-list">
-    <List v-model="allDays" />
+  <div class="days-zone">
+    <List v-model="allDays" @itemClick="itemClick" />
     <Footer />
+    <DayInfo :day="currentDay" :visible.sync="showDayInfo" />
   </div>
 </template>
 <script>
 import List from "./modules/List";
 import Footer from "./modules/Footer";
+import DayInfo from "./modules/DayInfo";
 export default {
   name: "DaysList",
-  components: { List, Footer },
+  components: { List, Footer, DayInfo },
   data() {
     return {
       allDays: [
@@ -30,12 +32,20 @@ export default {
           repeat: "",
         },
       ],
+      showDayInfo: false,
+      currentDay: {},
     };
+  },
+  methods: {
+    itemClick(val) {
+      this.currentDay = val;
+      this.showDayInfo = true;
+    },
   },
 };
 </script>
 <style scoped>
-.days-list {
+.days-zone {
   width: 100%;
   height: 100%;
   background-color: var(--list-bg-color);

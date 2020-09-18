@@ -5,7 +5,7 @@
       :key="index"
       :class="'list-item'"
       :style="{ background: item.background }"
-      @click="$emit('item-click')"
+      @click="itemClick(item)"
     >
       <template v-if="item.status === 'now'">
         <span>今天是{{ item.name }}</span>
@@ -42,7 +42,6 @@ export default {
   },
   computed: {
     lists() {
-      console.log(dayjs());
       return this.data.map((e) => {
         const num = dayjs().diff(dayjs(e.time), "day");
         return {
@@ -52,6 +51,11 @@ export default {
           background: "pink",
         };
       });
+    },
+  },
+  methods: {
+    itemClick(val) {
+      this.$emit("itemClick", val);
     },
   },
 };

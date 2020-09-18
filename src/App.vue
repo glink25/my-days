@@ -5,19 +5,19 @@
     </div>
     <div class="content-zone">
       <div class="placeholder"></div>
-      <DaysList />
+      <DaysZone />
     </div>
   </div>
 </template>
 
 <script>
-import DaysList from "./components/DaysZone.vue";
+import DaysZone from "./components/DaysZone.vue";
 import TimeZone from "./components/TimeZone.vue";
 
 export default {
   name: "App",
   components: {
-    DaysList,
+    DaysZone,
     TimeZone,
   },
 };
