@@ -1,19 +1,26 @@
 <template>
-  <div v-if="visible" class="mask">
-    <div @click.stop="$emit('update:visible', false)" class="mask-model"></div>
-    <div class="mask-content">
-      <slot></slot>
+  <transition name="mask">
+    <div v-show="visible" class="mask">
+      <transition name="fade">
+        <div
+          v-if="visible"
+          @click.stop="$emit('update:visible', false)"
+          class="mask-model"
+        ></div>
+      </transition>
+      <transition name="slide">
+        <div v-if="visible" class="mask-content">
+          <slot></slot>
+        </div>
+      </transition>
     </div>
-  </div>
+  </transition>
 </template>
 <script>
 export default {
   name: "MaskOver",
   props: {
     visible: { type: Boolean, default: false },
-  },
-  data() {
-    return {};
   },
 };
 </script>
@@ -37,5 +44,36 @@ export default {
   height: 100%;
   background-color: black;
   opacity: 0.2;
+}
+/* transition */
+.mask-enter,
+.mask-leave-to {
+  transition-delay: 0.4s;
+}
+.mask-enter-active,
+.mask-leave-active {
+  transition-delay: 0.4s;
+}
+/* fade */
+.fade-enter,
+.fade-leave-to {
+  opacity: 0;
+}
+.fade-enter-active {
+  transition: all 0.4s ease;
+}
+.fade-leave-active {
+  transition: all 0.4s ease;
+}
+/* slide */
+.slide-enter,
+.slide-leave-to {
+  transform: translateY(100%);
+}
+.slide-enter-active {
+  transition: all 0.4s;
+}
+.slide-leave-active {
+  transition: all 0.4s;
 }
 </style>

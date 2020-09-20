@@ -1,11 +1,11 @@
 <template>
   <div id="app">
     <div class="fixed-zone">
-      <TimeZone />
+      <TimeZone ref="timeZone" />
     </div>
     <div class="content-zone">
-      <div class="placeholder"></div>
-      <DaysZone />
+      <div class="placeholder" @click="change"></div>
+      <DaysZone class="days" />
     </div>
   </div>
 </template>
@@ -20,18 +20,30 @@ export default {
     DaysZone,
     TimeZone,
   },
+  methods: {
+    change() {
+      const digital = this.$refs.timeZone.$refs.digital;
+      digital.isLeft = !digital.isLeft;
+    },
+  },
 };
 </script>
 
 <style>
 @import url(./style/_variable.css);
+html,
 body {
   padding: 0;
   margin: 0;
-  background-color: var(--bg-color);
+  width: 100%;
+  height: 100%;
+  background-color: var(--bg-color) !important;
+}
+* {
+  font-family: "SF Pro SC", "SF Pro Text", "SF Pro Icons", "PingFang SC",
+    "Helvetica Neue", "Helvetica", "Arial", sans-serif;
 }
 #app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   height: 100%;
@@ -47,10 +59,15 @@ body {
   width: 100%;
   height: 100%;
   background: transparent;
+  display: flex;
+  flex-flow: column nowrap;
 }
 .placeholder {
+  flex: 1 320px;
   width: 100%;
-  height: 290px;
   background: none;
+}
+.days {
+  flex: 1 430px;
 }
 </style>
