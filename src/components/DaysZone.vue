@@ -51,5 +51,8 @@ export default {
   background-color: var(--list-bg-color);
   border-radius: var(--radius) var(--radius) 0 0;
   padding-top: var(--radius);
+  display: flex;
+  flex-flow: column nowrap;
+  justify-content: space-between;
 }
 </style>

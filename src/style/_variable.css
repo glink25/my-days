@@ -1,6 +1,10 @@
-#app {
+body {
   --bg-color: #000;
   --list-bg-color: #fff;
   --list-color: #fff;
   --radius: 10px;
+  --orange: #f4511e;
+  --red: #fa114f;
+  --green: #92e82a;
+  --blue: #1eeaef;
 }
