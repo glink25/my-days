@@ -10,7 +10,9 @@
   "dependencies": {
     "core-js": "^3.6.5",
     "dayjs": "^1.8.36",
-    "vue": "^2.6.11"
+    "mint-ui": "^2.2.13",
+    "vue": "^2.6.11",
+    "vux": "^2.9.4"
   },
   "devDependencies": {
     "@vue/cli-plugin-babel": "~4.5.0",

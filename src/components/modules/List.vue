@@ -75,7 +75,6 @@ export default {
   },
   mounted() {
     this.left = this.lists.map(() => 0);
-    console.log(this.left);
   },
 
   methods: {
@@ -84,16 +83,13 @@ export default {
     },
     touchStart(e) {
       this.startX = e.touches[0].clientX;
-      e.preventDefault();
     },
     touchMove(e, index) {
       const offset = e.touches[0].clientX - this.startX;
       if (offset < 0 && offset > -60) this.left[index] = offset;
-      console.log(this.left);
     },
     touchEnd(e) {
       console.log(e);
-      e.preventDefault();
     },
   },
 };
