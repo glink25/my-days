@@ -18,7 +18,7 @@
     </div>
     <div class="item">
       <span>今日{{ isLeft ? "还有" : "已过了" }}</span
-      ><span class="num red">{{ seconds }}</span
+      ><span class="num red">{{ isLeft ? leftSec : passSec }}</span
       ><span>秒</span>
     </div>
   </div>
@@ -31,7 +31,7 @@ dayjs.extend(weekday);
 export default {
   name: "Digital",
   data() {
-    return { isLeft: true, seconds: 0, tick: "" };
+    return { isLeft: true, leftSec: 0, tickLeft: "", tickPass: "", passSec: 0 };
   },
   computed: {
     yearLeft() {
@@ -61,25 +61,23 @@ export default {
   },
   beforeDestroy() {
     clearInterval(this.tick);
-    this.tick = null;
+    this.tickLeft = null;
+    this.tickPass = null;
   },
   methods: {
     setSeconds() {
       clearInterval(this.tick);
-      this.tick = null;
-      this.tick = null;
+      this.tickLeft = null;
+      this.tickPass = null;
       const that = this;
-      if (this.isLeft) {
-        this.tick = setInterval(() => {
-          that.seconds = dayjs()
-            .endOf("day")
-            .diff(dayjs(), "second");
-        }, 1000);
-      } else {
-        this.tick = setInterval(() => {
-          that.seconds = dayjs().diff(dayjs().startOf("day"), "second");
-        }, 1000);
-      }
+      this.tickLeft = setInterval(() => {
+        that.leftSec = dayjs()
+          .endOf("day")
+          .diff(dayjs(), "second");
+      }, 1000);
+      this.tickPass = setInterval(() => {
+        that.passSec = dayjs().diff(dayjs().startOf("day"), "second");
+      }, 1000);
     },
   },
 };

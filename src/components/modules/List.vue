@@ -3,39 +3,51 @@
     <span class="title">{{
       lists.length ? "我的日子" : "还没有日子，去添加吧"
     }}</span>
-    <div
+    <van-swipe-cell
       v-for="(item, index) in lists"
+      :ref="`swiper${index}`"
+      :name="`swiper${index}`"
       :key="index"
       :class="'list-item'"
       :style="{ background: item.background }"
-      @click="itemClick(item)"
-      @touchstart="touchStart($event, index)"
-      @touchmove="touchMove($event, index)"
-      @touchend="touchEnd($event, index)"
     >
-      <div class="item-content" :style="{ left: `${left[index]}px` }">
-        <template v-if="item.status === 'now'">
-          <span>今天是{{ item.name }}</span>
-        </template>
-        <template v-else>
-          <div class="left">
-            <span class="prefix">距离</span>
-            <span class="name">{{ item.name }}</span>
-            <span class="middle">{{
-              item.status === "after" ? "已经过了" : "还有"
-            }}</span>
-          </div>
-          <div class="right">
-            <span class="num">{{ item.num }}</span>
-            <span class="append">天</span>
-          </div>
-        </template>
-      </div>
       <div
-        class="item-append"
-        :style="{ left: `calc(100% + ${left[index]}px)` }"
-      ></div>
-    </div>
+        class="item-wrapper"
+        @click="itemClick(item)"
+        @touchstart="ifOffClick"
+        @mousedown="ifOffClick"
+      >
+        <div class="item-content">
+          <template v-if="item.status === 'now'">
+            <span>今天是{{ item.name }}</span>
+          </template>
+          <template v-else>
+            <div class="left">
+              <span class="prefix">距离</span>
+              <span class="name">{{ item.name }}</span>
+              <span class="middle">{{
+                item.status === "after" ? "已经过了" : "还有"
+              }}</span>
+            </div>
+            <div class="right">
+              <span class="num">{{ item.num }}</span>
+              <span class="append">天</span>
+            </div>
+          </template>
+        </div>
+        <div class="item-append"></div>
+      </div>
+      <template #right>
+        <van-button
+          square
+          type="danger"
+          text="删除"
+          class="del-button"
+          :class="{ 'long-button': buttonStyle[index] }"
+          @click="confirmDel(item, index)"
+        />
+      </template>
+    </van-swipe-cell>
   </div>
 </template>
 <script>
@@ -52,7 +64,9 @@ export default {
   data() {
     return {
       left: [],
-      startX: 0,
+      offClick: false,
+      buttonStyle: [],
+      currentRef: "",
     };
   },
   computed: {
@@ -74,22 +88,36 @@ export default {
     },
   },
   mounted() {
-    this.left = this.lists.map(() => 0);
+    // this.buttonStyle = this.lists.map(() => false);
   },
 
   methods: {
     itemClick(val) {
-      this.$emit("itemClick", val);
+      console.log(this.offClick);
+      if (!this.offClick) this.$emit("itemClick", val);
     },
-    touchStart(e) {
-      this.startX = e.touches[0].clientX;
+    confirmDel(val) {
+      this.$dialog.confirm({ title: "确认删除这个日子吗？" }).then(() => {
+        this.$emit("delete", val);
+      });
+      // if (this.clickDel) {
+      //   // delete
+      //   this.clickDel = true;
+      // } else {
+      //   this.buttonStyle[index] = true;
+      //   this.clickDel = true;
+      //   console.log(val);
+      // }
     },
-    touchMove(e, index) {
-      const offset = e.touches[0].clientX - this.startX;
-      if (offset < 0 && offset > -60) this.left[index] = offset;
-    },
-    touchEnd(e) {
-      console.log(e);
+    ifOffClick() {
+      let lists = this.$refs,
+        len = lists.length - 1;
+      while (lists[len]) {
+        if (lists[len--].offset !== 0) {
+          this.offClick = true;
+          return;
+        }
+      }
     },
   },
 };
@@ -108,16 +136,17 @@ span.title {
 .list-item {
   margin: 5px 0;
   height: 75px;
-  /* display: flex;
-  align-items: flex-end;
-  justify-content: space-between; */
   overflow: hidden;
   border: 1px solid transparent;
   border-radius: var(--radius);
 }
-.item-content {
-  width: 100%;
+.item-wrapper {
   height: 100%;
+  margin-left: 5px;
+}
+.item-content {
+  width: calc(100% - 5px);
+  height: calc(100% - 5px);
   position: relative;
   display: flex;
   align-items: flex-end;
@@ -149,7 +178,7 @@ span.title {
 .item-content .num {
   font-weight: bold;
   font-size: 36px;
-  line-height: 85%;
+  line-height: 100%;
   max-width: 100px;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -161,5 +190,11 @@ span.title {
   height: calc(100% + 4px);
   width: 60px;
   background-color: red;
+}
+/deep/ .van-swipe-cell__wrapper {
+  height: 100%;
+}
+.del-button {
+  height: 100%;
 }
 </style>

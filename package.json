@@ -8,11 +8,11 @@
     "lint": "vue-cli-service lint"
   },
   "dependencies": {
+    "@vant/touch-emulator": "^1.2.0",
     "core-js": "^3.6.5",
     "dayjs": "^1.8.36",
-    "mint-ui": "^2.2.13",
-    "vue": "^2.6.11",
-    "vux": "^2.9.4"
+    "vant": "^2.10.8",
+    "vue": "^2.6.11"
   },
   "devDependencies": {
     "@vue/cli-plugin-babel": "~4.5.0",
@@ -21,7 +21,8 @@
     "babel-eslint": "^10.1.0",
     "eslint": "^6.7.2",
     "eslint-plugin-vue": "^6.2.2",
-    "vue-template-compiler": "^2.6.11"
+    "vue-template-compiler": "^2.6.11",
+    "vux-loader": "^1.2.9"
   },
   "eslintConfig": {
     "root": true,

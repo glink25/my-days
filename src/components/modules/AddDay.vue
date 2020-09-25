@@ -1,10 +1,14 @@
 <template>
-  <MaskOver :visible.sync="selfVisible">
+  <van-popup
+    v-model="selfVisible"
+    get-container="body"
+    position="bottom"
+    :style="{ height: '100%' }"
+  >
     <template>x</template>
-  </MaskOver>
+  </van-popup>
 </template>
 <script>
-import MaskOver from "../ui/Mask";
 export default {
   name: "AddDay",
   props: {
@@ -13,7 +17,6 @@ export default {
       default: false,
     },
   },
-  components: { MaskOver },
   data() {
     return {
       selfVisible: false,

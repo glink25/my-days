@@ -36,7 +36,6 @@ body {
   padding: 0;
   margin: 0;
   width: 100%;
-  height: 100%;
   background-color: var(--bg-color) !important;
 }
 * {
@@ -46,7 +45,6 @@ body {
 #app {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  height: 100%;
 }
 .fixed-zone {
   position: fixed;
@@ -57,17 +55,17 @@ body {
 }
 .content-zone {
   width: 100%;
-  height: 100%;
   background: transparent;
   display: flex;
   flex-flow: column nowrap;
 }
 .placeholder {
-  flex: 1 320px;
+  flex-basis: 320px;
   width: 100%;
   background: none;
 }
 .days {
-  flex: 1 430px;
+  flex: 1;
+  min-height: calc(100vh - 320px);
 }
 </style>

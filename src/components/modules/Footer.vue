@@ -1,27 +1,81 @@
 <template>
   <div class="footer">
-    <div class="buttons">
-      <MButton @click="showAddDay = true" />
+    <div class="option">
+      <transition name="slide">
+        <div v-show="showMoreOption" class="option-inner">
+          <div class="theme">
+            <van-switch v-model="checked" /><span>使用渐变主题</span>
+          </div>
+          <span class="import">导入日程</span>
+        </div>
+      </transition>
+      <div class="option-outer">
+        <van-button
+          class="more-button"
+          @click="showMoreOption = !showMoreOption"
+        >
+          <van-icon name="ellipsis" />
+        </van-button>
+        <van-button class="add-button" @click="showAddDay = true">
+          <van-icon name="plus" />
+        </van-button>
+      </div>
     </div>
-    <span>版权</span>
+    <span class="copy-right">版权</span>
     <AddDay :visible.sync="showAddDay" />
   </div>
 </template>
 <script>
-import MButton from "../ui/MButton";
 import AddDay from "./AddDay";
 export default {
   name: "Footer",
-  components: { MButton, AddDay },
+  components: { AddDay },
   data() {
     return {
       showAddDay: false,
+      showMoreOption: false,
+      checked: false,
     };
   },
 };
 </script>
 <style scoped>
-.footer span {
+/* .footer span {
   font-size: 10px;
+} */
+.option-outer,
+.option-inner {
+  display: flex;
+  flex-flow: row nowrap;
+  justify-content: space-between;
+  height: 32px;
+  overflow: hidden;
+  padding: 2px 6px;
+}
+.more-button,
+.add-button {
+  border: none;
+  background: none;
+  height: 24px;
+}
+.add-button {
+  color: white;
+  background-color: tomato;
+  width: 60px;
+  border-radius: 16px;
+}
+.van-icon {
+  font-size: 24px;
+}
+/* slide */
+.slide-enter,
+.slide-leave-to {
+  height: 0;
+}
+.slide-enter-active {
+  transition: all 1s;
+}
+.slide-leave-active {
+  transition: all 1s;
 }
 </style>
