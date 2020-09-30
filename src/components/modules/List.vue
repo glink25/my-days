@@ -9,7 +9,7 @@
       :name="`swiper${index}`"
       :key="index"
       :class="'list-item'"
-      :style="{ background: item.background }"
+      :style="getBacground(item.background)"
     >
       <div
         class="item-wrapper"
@@ -52,6 +52,28 @@
 </template>
 <script>
 import dayjs from "dayjs";
+
+const flatColors = [
+  "#00838F",
+  "#00695C",
+  "#2E7D32",
+  "#558B2F",
+  "#9E9D24",
+  "#F9A825",
+  "#FF8F00",
+  "#EF6C00",
+];
+const gradientColors = [
+  "linear-gradient(160deg, #00ffd5 20%,#008cff 80%)",
+  "linear-gradient(160deg, #b100ff 20%,#00b3ff 80%)",
+  "linear-gradient(160deg, #0078ff 20%,#002abb 80%)",
+  "linear-gradient(160deg, #ffce00 20%,#ff8b00 80%)",
+  "linear-gradient(160deg, #0078ff 20%,#002abb 80%)",
+  "linear-gradient(160deg, #a200ff 20%,#cf3700 80%)",
+  "linear-gradient(160deg, #a200ff 20%,#cf3700 80%)",
+  "linear-gradient(160deg, #a200ff 20%,#cf3700 80%)",
+];
+
 export default {
   name: "List",
   model: {
@@ -60,6 +82,7 @@ export default {
   },
   props: {
     data: { type: Array, required: true },
+    useTheme: { type: Boolean, required: true },
   },
   data() {
     return {
@@ -71,13 +94,14 @@ export default {
   },
   computed: {
     lists() {
+      const colors = this.useTheme ? flatColors : gradientColors;
       return this.data.map((e) => {
         const num = dayjs().diff(dayjs(e.time), "day");
         return {
           ...e,
           num,
           status: num === 0 ? "now" : num > 0 ? "after" : "before",
-          background: "pink",
+          background: colors[0],
         };
       });
     },
@@ -86,19 +110,25 @@ export default {
     lists(val) {
       this.left = val.map(() => 0);
     },
+    useTheme(v) {
+      console.log(v);
+    },
   },
   mounted() {
     // this.buttonStyle = this.lists.map(() => false);
   },
 
   methods: {
+    getBacground(val) {
+      if (!this.useTheme) return { backgroundImage: val };
+      return { backgroundColor: val };
+    },
     itemClick(val) {
-      console.log(this.offClick);
       if (!this.offClick) this.$emit("itemClick", val);
     },
     confirmDel(val) {
       this.$dialog.confirm({ title: "确认删除这个日子吗？" }).then(() => {
-        this.$emit("delete", val);
+        this.$emit("delete", val.id);
       });
       // if (this.clickDel) {
       //   // delete
@@ -137,7 +167,7 @@ span.title {
   margin: 5px 0;
   height: 75px;
   overflow: hidden;
-  border: 1px solid transparent;
+  border: 1px solid;
   border-radius: var(--radius);
 }
 .item-wrapper {

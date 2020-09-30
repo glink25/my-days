@@ -4,7 +4,7 @@
       <transition name="slide">
         <div v-show="showMoreOption" class="option-inner">
           <div class="theme">
-            <van-switch v-model="checked" /><span>使用渐变主题</span>
+            <van-switch v-model="selfShow" /><span>使用渐变主题</span>
           </div>
           <span class="import">导入日程</span>
         </div>
@@ -16,26 +16,33 @@
         >
           <van-icon name="ellipsis" />
         </van-button>
-        <van-button class="add-button" @click="showAddDay = true">
+        <van-button class="add-button" @click="$emit('showAdd')">
           <van-icon name="plus" />
         </van-button>
       </div>
     </div>
     <span class="copy-right">Copyright 2020 无良的北极 Rights Reserved.</span>
-    <AddDay :visible.sync="showAddDay" />
   </div>
 </template>
 <script>
-import AddDay from "./AddDay";
 export default {
   name: "Footer",
-  components: { AddDay },
+  props: {
+    useTheme: { type: Boolean, required: true },
+  },
   data() {
     return {
-      showAddDay: false,
       showMoreOption: false,
-      checked: false,
+      selfShow: this.useTheme,
     };
+  },
+  watch: {
+    useTheme() {
+      this.selfShow = this.useTheme;
+    },
+    selfShow(val) {
+      this.$emit("update:useTheme", val);
+    },
   },
 };
 </script>

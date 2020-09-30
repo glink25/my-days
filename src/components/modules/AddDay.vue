@@ -118,8 +118,11 @@ export default {
         this.$emit("add", {
           name: this.name,
           comment: this.comment,
-          date: this.date,
+          date: dayjs(this.date).format("YYYY-MM-DD"),
+          repeat: this.repeat,
         });
+        this.selfVisible = false;
+        return;
       }
       this.$dialog.alert({
         message: "请填写名称",

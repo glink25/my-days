@@ -1,63 +1,59 @@
 <template>
   <div class="days-zone">
-    <List v-model="allDays" @itemClick="itemClick" />
-    <Footer />
+    <List
+      v-model="allDays"
+      @itemClick="itemClick"
+      @delete="delDay"
+      :use-theme="useTheme"
+    />
+    <Footer :use-theme.sync="useTheme" @showAdd="showAddDay = true" />
     <DayInfo :day="currentDay" :visible.sync="showDayInfo" />
+    <AddDay :visible.sync="showAddDay" @add="addDay" />
   </div>
 </template>
 <script>
 import List from "./modules/List";
 import Footer from "./modules/Footer";
 import DayInfo from "./modules/DayInfo";
+import AddDay from "./modules/AddDay";
 import daysOperate from "./days-opt";
 export default {
   name: "DaysList",
-  components: { List, Footer, DayInfo },
+  components: { List, Footer, DayInfo, AddDay },
   data() {
     return {
-      allDays: [
-        {
-          name: "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
-          createTime: "2020-01-11 01:00:10",
-          updateTime: "",
-          time: "2020-09-11 01:00:10",
-          comment: "",
-          repeat: "",
-        },
-        // {
-        //   name: "cc",
-        //   createTime: "2020-09-11 01:00:10",
-        //   updateTime: "",
-        //   time: "2020-01-11 01:00:10",
-        //   comment: "",
-        //   repeat: "",
-        // },
-        // {
-        //   name: "cc",
-        //   createTime: "2020-09-11 01:00:10",
-        //   updateTime: "",
-        //   time: "2020-01-11 01:00:10",
-        //   comment: "",
-        //   repeat: "",
-        // },
-        // {
-        //   name: "cc",
-        //   createTime: "2020-09-11 01:00:10",
-        //   updateTime: "",
-        //   time: "2020-01-11 01:00:10",
-        //   comment: "",
-        //   repeat: "",
-        // },
-      ],
+      allDays: [],
       showDayInfo: false,
       currentDay: {},
+      useTheme: this.getTheme(),
+      showAddDay: false,
     };
+  },
+  mounted() {
+    this.getDays();
+    // this.useTheme = this.getTheme();
+  },
+  watch: {
+    useTheme(val) {
+      this.setTheme(val);
+    },
   },
   methods: {
     ...daysOperate,
     itemClick(val) {
       this.currentDay = val;
       this.showDayInfo = true;
+    },
+    getDays() {
+      this.allDays = this.findDays();
+    },
+    addDay(val) {
+      this.insertDay(val);
+      this.getDays();
+    },
+    delDay(val) {
+      this.removeDay(val);
+      this.getDays();
     },
   },
 };
