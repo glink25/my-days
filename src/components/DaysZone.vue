@@ -9,6 +9,7 @@
 import List from "./modules/List";
 import Footer from "./modules/Footer";
 import DayInfo from "./modules/DayInfo";
+import daysOperate from "./days-opt";
 export default {
   name: "DaysList",
   components: { List, Footer, DayInfo },
@@ -53,6 +54,7 @@ export default {
     };
   },
   methods: {
+    ...daysOperate,
     itemClick(val) {
       this.currentDay = val;
       this.showDayInfo = true;

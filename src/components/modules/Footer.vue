@@ -21,7 +21,7 @@
         </van-button>
       </div>
     </div>
-    <span class="copy-right">版权</span>
+    <span class="copy-right">Copyright 2020 无良的北极 Rights Reserved.</span>
     <AddDay :visible.sync="showAddDay" />
   </div>
 </template>
@@ -43,6 +43,11 @@ export default {
 /* .footer span {
   font-size: 10px;
 } */
+.footer {
+  display: flex;
+  flex-flow: column nowrap;
+  justify-content: center;
+}
 .option-outer,
 .option-inner {
   display: flex;
@@ -66,6 +71,12 @@ export default {
 }
 .van-icon {
   font-size: 24px;
+}
+.copy-right {
+  width: 100%;
+  font-size: 8px;
+  text-align: center;
+  color: gray;
 }
 /* slide */
 .slide-enter,
