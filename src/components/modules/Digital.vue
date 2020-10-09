@@ -3,22 +3,22 @@
     <span>时间在流逝</span>
     <div class="item">
       <span>今年{{ isLeft ? "还有" : "已过了" }}</span
-      ><span class="num orange">{{ yearLeft }}</span
+      ><span class="num orange">{{ year }}</span
       ><span>天</span>
     </div>
     <div class="item">
       <span>本周{{ isLeft ? "剩余" : "已过了" }}</span
-      ><span class="num green">{{ weekLeft }}</span
+      ><span class="num green">{{ week }}</span
       ><span>天</span>
     </div>
     <div class="item">
       <span>本月{{ isLeft ? "剩余" : "已过了" }}</span
-      ><span class="num blue">{{ monthLeft }}</span
+      ><span class="num blue">{{ month }}</span
       ><span>天</span>
     </div>
     <div class="item">
       <span>今日{{ isLeft ? "还有" : "已过了" }}</span
-      ><span class="num red">{{ isLeft ? leftSec : passSec }}</span
+      ><span class="num red">{{ sec }}</span
       ><span>秒</span>
     </div>
   </div>
@@ -30,55 +30,15 @@ dayjs.extend(weekday);
 
 export default {
   name: "Digital",
+  props: {
+    isLeft: { type: Boolean, required: true },
+    year: { type: Number, required: true },
+    week: { type: Number, required: true },
+    month: { type: Number, required: true },
+    sec: { type: Number, required: true },
+  },
   data() {
-    return { isLeft: true, leftSec: 0, tickLeft: "", tickPass: "", passSec: 0 };
-  },
-  computed: {
-    yearLeft() {
-      if (this.isLeft) return dayjs().diff(dayjs().startOf("year"), "day");
-      return dayjs()
-        .endOf("year")
-        .diff(dayjs(), "day");
-    },
-    weekLeft() {
-      if (this.isLeft) return dayjs().weekday();
-      return 7 - dayjs().weekday();
-    },
-    monthLeft() {
-      if (this.isLeft) return dayjs().diff(dayjs().startOf("month"), "day");
-      return dayjs()
-        .endOf("month")
-        .diff(dayjs(), "day");
-    },
-  },
-  watch: {
-    isLeft() {
-      this.setSeconds();
-    },
-  },
-  mounted() {
-    this.setSeconds();
-  },
-  beforeDestroy() {
-    clearInterval(this.tick);
-    this.tickLeft = null;
-    this.tickPass = null;
-  },
-  methods: {
-    setSeconds() {
-      clearInterval(this.tick);
-      this.tickLeft = null;
-      this.tickPass = null;
-      const that = this;
-      this.tickLeft = setInterval(() => {
-        that.leftSec = dayjs()
-          .endOf("day")
-          .diff(dayjs(), "second");
-      }, 1000);
-      this.tickPass = setInterval(() => {
-        that.passSec = dayjs().diff(dayjs().startOf("day"), "second");
-      }, 1000);
-    },
+    return {};
   },
 };
 </script>

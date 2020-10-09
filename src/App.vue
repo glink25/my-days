@@ -22,8 +22,8 @@ export default {
   },
   methods: {
     change() {
-      const digital = this.$refs.timeZone.$refs.digital;
-      digital.isLeft = !digital.isLeft;
+      const timeZone = this.$refs.timeZone;
+      timeZone.isLeft = !timeZone.isLeft;
     },
   },
 };
