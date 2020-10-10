@@ -118,7 +118,7 @@ export default {
         this.$emit("add", {
           name: this.name,
           comment: this.comment,
-          date: dayjs(this.date).format("YYYY-MM-DD"),
+          date: dayjs(this.date).format("YYYY/MM/DD"),
           repeat: this.repeat,
         });
         this.selfVisible = false;
