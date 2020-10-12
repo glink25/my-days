@@ -73,6 +73,7 @@ const gradientColors = [
   "linear-gradient(160deg, #a200ff 20%,#cf3700 80%)",
   "linear-gradient(160deg, #a200ff 20%,#cf3700 80%)",
 ];
+const levels = [10, 30, 100, 365, 800, 1200, 2000, 4000];
 
 export default {
   name: "List",
@@ -94,33 +95,34 @@ export default {
   },
   computed: {
     lists() {
-      const colors = this.useTheme ? flatColors : gradientColors;
-      return this.data.map((e) => {
-        const num = dayjs().diff(dayjs(e.time), "day");
-        return {
-          ...e,
-          num,
-          status: num === 0 ? "now" : num > 0 ? "after" : "before",
-          background: colors[0],
-        };
-      });
+      const colors = !this.useTheme ? flatColors : gradientColors;
+      return this.data
+        ? this.data.map((e) => {
+            const num = dayjs().diff(dayjs(e.date), "day");
+            let tmp = -1;
+            levels.forEach((l, i) => {
+              if (l - Math.abs(num) > 0 && tmp === -1) tmp = i;
+              if (i === levels.length - 1 && tmp === -1) tmp = i;
+            });
+            const level = tmp === -1 ? 0 : tmp;
+            return {
+              ...e,
+              num: Math.abs(num),
+              status: num === 0 ? "now" : num > 0 ? "after" : "before",
+              background: colors[level],
+            };
+          })
+        : [];
     },
   },
   watch: {
     lists(val) {
       this.left = val.map(() => 0);
     },
-    useTheme(v) {
-      console.log(v);
-    },
   },
-  mounted() {
-    // this.buttonStyle = this.lists.map(() => false);
-  },
-
   methods: {
     getBacground(val) {
-      if (!this.useTheme) return { backgroundImage: val };
+      if (this.useTheme) return { backgroundImage: val };
       return { backgroundColor: val };
     },
     itemClick(val) {
@@ -130,14 +132,6 @@ export default {
       this.$dialog.confirm({ title: "确认删除这个日子吗？" }).then(() => {
         this.$emit("delete", val.id);
       });
-      // if (this.clickDel) {
-      //   // delete
-      //   this.clickDel = true;
-      // } else {
-      //   this.buttonStyle[index] = true;
-      //   this.clickDel = true;
-      //   console.log(val);
-      // }
     },
     ifOffClick() {
       let lists = this.$refs,
@@ -165,7 +159,7 @@ span.title {
 }
 .list-item {
   margin: 5px 0;
-  height: 75px;
+  height: 85px;
   overflow: hidden;
   border: 1px solid;
   border-radius: var(--radius);

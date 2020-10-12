@@ -27,11 +27,11 @@ const setTheme = (val) => {
 };
 const getTheme = () => {
   const theme = localStorage.theme;
-  if (!theme.length) {
+  if (!theme) {
     localStorage.setItem("theme", "false");
     return true;
   }
-  return !!theme;
+  return !!JSON.parse(theme);
 };
 export default {
   findDays,

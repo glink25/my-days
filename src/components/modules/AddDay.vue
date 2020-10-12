@@ -107,6 +107,7 @@ export default {
   watch: {
     visible(val) {
       this.selfVisible = val;
+      this.reset();
     },
     selfVisible(val) {
       this.$emit("update:visible", val);
@@ -127,6 +128,12 @@ export default {
       this.$dialog.alert({
         message: "请填写名称",
       });
+    },
+    reset() {
+      this.name = "";
+      this.date = dayjs().toDate();
+      this.comment = "";
+      this.repeat = "none";
     },
   },
 };
