@@ -1,6 +1,6 @@
 <template>
   <div class="digital-wrapper">
-    <span>时间在流逝</span>
+    <span class="title">时间在流逝</span>
     <div class="item">
       <span>今年{{ isLeft ? "还有" : "已过了" }}</span
       ><span class="num orange">{{ year }}</span
@@ -48,6 +48,9 @@ export default {
 }
 .digital-wrapper span {
   color: var(--list-color);
+}
+.title {
+  padding-right: 10px;
 }
 .item {
   padding: 10px;

@@ -4,9 +4,8 @@
       <transition name="slide">
         <div v-show="showMoreOption" class="option-inner">
           <div class="theme">
-            <van-switch v-model="selfShow" /><span>使用渐变主题</span>
+            <van-switch v-model="selfShow" size="20" /><span>使用渐变主题</span>
           </div>
-          <span class="import">导入日程</span>
         </div>
       </transition>
       <div class="option-outer">
@@ -64,6 +63,14 @@ export default {
   overflow: hidden;
   padding: 2px 6px;
 }
+.theme {
+  display: flex;
+  align-items: center;
+  padding-left: 10px;
+}
+.theme span {
+  padding-left: 5px;
+}
 .more-button,
 .add-button {
   border: none;
@@ -89,11 +96,12 @@ export default {
 .slide-enter,
 .slide-leave-to {
   height: 0;
+  opacity: 0;
 }
 .slide-enter-active {
-  transition: all 1s;
+  transition: all 0.6s;
 }
 .slide-leave-active {
-  transition: all 1s;
+  transition: all 0.6s;
 }
 </style>

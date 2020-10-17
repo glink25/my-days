@@ -159,7 +159,7 @@ span.title {
 }
 .list-item {
   margin: 5px 0;
-  height: 85px;
+  height: 90px;
   overflow: hidden;
   border: 1px solid;
   border-radius: var(--radius);
@@ -217,6 +217,8 @@ span.title {
 }
 /deep/ .van-swipe-cell__wrapper {
   height: 100%;
+}
+/deep/ .van-swipe-cell__right {
 }
 .del-button {
   height: 100%;

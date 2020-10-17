@@ -111,7 +111,7 @@ export default {
 .canvas {
   z-index: 10;
   width: 400px;
-  padding: 35px;
+  padding: 30px;
 }
 .year-bar {
   width: 88%;
@@ -119,11 +119,13 @@ export default {
   margin-left: 30px;
   border-radius: 30px;
   transition: background-color 1.3s ease;
+  -webkit-transition: background-color 1.3s ease;
 }
 .year-bar-inside {
-  width: 0;
+  width: 10%;
   height: 100%;
   border-radius: 30px;
   transition: width 1.3s ease, background-color 1.3s ease;
+  -webkit-transition: width 1.3s ease, background-color 1.3s ease;
 }
 </style>

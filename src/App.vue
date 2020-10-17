@@ -5,7 +5,7 @@
     </div>
     <div class="content-zone">
       <div class="placeholder" @click="change"></div>
-      <DaysZone class="days" />
+      <DaysZone id="daysZone" class="days" />
     </div>
   </div>
 </template>
@@ -20,10 +20,21 @@ export default {
     DaysZone,
     TimeZone,
   },
+  mounted() {
+    // console.log("hell");
+    // const daysZone = document.getElementById("daysZone");
+    document.body.addEventListener("scroll", function(e) {
+      console.log(e);
+    });
+  },
+  beforeDestroy() {},
   methods: {
     change() {
       const timeZone = this.$refs.timeZone;
       timeZone.isLeft = !timeZone.isLeft;
+    },
+    onscroll(e) {
+      console.log(e);
     },
   },
 };
@@ -41,6 +52,12 @@ body {
 * {
   font-family: "SF Pro SC", "SF Pro Text", "SF Pro Icons", "PingFang SC",
     "Helvetica Neue", "Helvetica", "Arial", sans-serif;
+}
+/* 禁止选择文本 */
+*:not(input) {
+  -moz-user-select: none;
+  -webkit-user-select: none;
+  user-select: none;
 }
 #app {
   -webkit-font-smoothing: antialiased;

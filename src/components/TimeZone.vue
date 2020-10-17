@@ -123,5 +123,6 @@ export default {
   position: relative;
   height: 100%;
   top: -100%;
+  z-index: 10;
 }
 </style>

@@ -12,3 +12,8 @@ body {
   --black: black;
   --radio-checked: blue;
 }
+.allow-select {
+  -moz-user-select: text;
+  -webkit-user-select: text;
+  user-select: text;
+}
