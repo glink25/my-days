@@ -38,20 +38,24 @@ export default {
       tickLeft: "",
       tickPass: "",
       passSec: dayjs().diff(dayjs().startOf("day"), "second"),
+      shouldRefresh: 1,
     };
   },
   computed: {
     yearLeft() {
+      if (this.shouldRefresh < 0) return null;
       if (!this.isLeft) return dayjs().diff(dayjs().startOf("year"), "day");
       return dayjs()
         .endOf("year")
         .diff(dayjs(), "day");
     },
     weekLeft() {
+      if (this.shouldRefresh < 0) return null;
       if (!this.isLeft) return dayjs().isoWeekday();
       return 7 - dayjs().isoWeekday();
     },
     monthLeft() {
+      if (this.shouldRefresh < 0) return null;
       if (!this.isLeft) return dayjs().diff(dayjs().startOf("month"), "day");
       return dayjs()
         .endOf("month")
@@ -59,21 +63,25 @@ export default {
     },
     // progress
     yearPct() {
+      if (this.shouldRefresh < 0) return null;
       const mount = dayjs()
         .endOf("year")
         .diff(dayjs().startOf("year"), "day");
       return 1 - this.yearLeft / mount;
     },
     monthPct() {
+      if (this.shouldRefresh < 0) return null;
       const mount = dayjs()
         .endOf("month")
         .diff(dayjs().startOf("month"), "day");
       return 1 - this.monthLeft / mount;
     },
     weekPct() {
+      if (this.shouldRefresh < 0) return null;
       return 1 - this.weekLeft / 7;
     },
     dayPct() {
+      if (this.shouldRefresh < 0) return null;
       return this.passSec / (24 * 60 * 60);
     },
   },
@@ -87,6 +95,10 @@ export default {
   },
   mounted() {
     this.setSeconds();
+    const that = this;
+    this.$bus.$on("refresh", function() {
+      that.refresh();
+    });
   },
   beforeDestroy() {
     clearInterval(this.tick);
@@ -107,6 +119,9 @@ export default {
       this.tickPass = setInterval(() => {
         that.passSec = dayjs().diff(dayjs().startOf("day"), "second");
       }, 1000);
+    },
+    refresh() {
+      this.shouldRefresh += 1;
     },
   },
 };

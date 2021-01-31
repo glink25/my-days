@@ -3,17 +3,23 @@
     <template
       ><div class="info-wrapper" :style="{ background: day.background }">
         <div class="info-body">
-          <div class="info-item info-name allow-select">{{ day.name }}</div>
+          <div class="info-body-head">
+            <div class="info-item info-name allow-select">{{ day.name }}</div>
+            <div class="edit-button" @click="edit(day)">
+              <van-icon name="edit" />
+            </div>
+          </div>
           <div class="info-item info-comment allow-select">
             {{ day.comment }}
           </div>
-          <div class="info-item info-date">{{ day.date }}</div>
+          <div class="info-item info-date">{{ dayStamp }}</div>
         </div>
       </div></template
     >
   </van-popup>
 </template>
 <script>
+import dayjs from "dayjs";
 export default {
   name: "DayInfo",
   props: {
@@ -39,6 +45,28 @@ export default {
       this.$emit("update:visible", val);
     },
   },
+  computed: {
+    dayStamp() {
+      const date = dayjs(this.day.date);
+      switch (this.day.repeat) {
+        case "year":
+          return date.format("每年MM月DD日");
+        case "month":
+          return date.format("每月DD日");
+        case "week":
+          return `每周${
+            ["日", "一", "二", "三", "四", "五", "六"][date.day()]
+          }`;
+        default:
+          return this.day.date;
+      }
+    },
+  },
+  methods: {
+    edit(day) {
+      this.$emit("edit", day);
+    },
+  },
 };
 </script>
 <style scoped>
@@ -60,7 +88,14 @@ export default {
   justify-content: space-between;
   align-items: flex-start;
   color: var(--white);
-  padding: 10px;
+  padding: 10px 15px 20px 15px;
+}
+.info-body-head {
+  width: 100%;
+  display: flex;
+  flex-flow: row nowrap;
+  justify-content: space-between;
+  align-items: center;
 }
 .info-name {
   font-size: 32px;

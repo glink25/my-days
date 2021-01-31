@@ -62,8 +62,8 @@
                   ></div>
                 </template>
               </van-radio>
-              <van-radio class="radio" name="day"
-                >日
+              <van-radio class="radio" name="week"
+                >周
                 <template #icon="props">
                   <div
                     :class="props.checked ? 'radio-checked' : 'radio-normal'"
@@ -78,7 +78,10 @@
             <van-icon class="form-button-icon" name="arrow-left" />
           </van-button>
           <van-button class="form-button" @click="submit">
-            <van-icon class="form-button-icon" name="plus" />
+            <van-icon
+              class="form-button-icon"
+              :name="config.name ? 'success' : 'plus'"
+            />
           </van-button>
         </div>
       </div>
@@ -94,16 +97,21 @@ export default {
       type: Boolean,
       default: false,
     },
+    config: {
+      type: Object,
+      default: () => {},
+    },
   },
   data() {
     return {
       selfVisible: false,
       name: "",
-      date: dayjs().toDate(),
+      date: new Date(),
       comment: "",
       repeat: "none",
     };
   },
+  computed: {},
   watch: {
     visible(val) {
       this.selfVisible = val;
@@ -112,11 +120,17 @@ export default {
     selfVisible(val) {
       this.$emit("update:visible", val);
     },
+    config(val) {
+      this.name = val.name ?? "";
+      this.date = val.date ? new Date(val.date) : new Date();
+      this.comment = val.comment ?? "";
+      this.repeat = val.repeat ?? "none";
+    },
   },
   methods: {
     submit() {
       if (this.name) {
-        this.$emit("add", {
+        this.$emit(this.config.name ? "edit" : "add", {
           name: this.name,
           comment: this.comment,
           date: dayjs(this.date).format("YYYY/MM/DD"),
@@ -131,7 +145,7 @@ export default {
     },
     reset() {
       this.name = "";
-      this.date = dayjs().toDate();
+      this.date = new Date();
       this.comment = "";
       this.repeat = "none";
     },

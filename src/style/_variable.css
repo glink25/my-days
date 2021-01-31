@@ -11,6 +11,7 @@ body {
   --gray: gray;
   --black: black;
   --radio-checked: blue;
+  background-color: var(--bg-color);
 }
 .allow-select {
   -moz-user-select: text;

@@ -19,11 +19,15 @@
       >
         <div class="item-content">
           <template v-if="item.status === 'now'">
-            <span>今天是{{ item.name }}</span>
+            <span class="prefix"
+              >今天是<span class="name">{{ item.name }}</span></span
+            >
           </template>
           <template v-else>
             <div class="left">
-              <span class="prefix">距离</span>
+              <span class="prefix"
+                >距离{{ item.repeat != "none" ? "下一个" : "" }}</span
+              >
               <span class="name">{{ item.name }}</span>
               <span class="middle">{{
                 item.status === "after" ? "已经过了" : "还有"
@@ -52,6 +56,8 @@
 </template>
 <script>
 import dayjs from "dayjs";
+const isoWeek = require("dayjs/plugin/isoWeek");
+dayjs.extend(isoWeek);
 
 const flatColors = [
   "#00838F",
@@ -98,7 +104,46 @@ export default {
       const colors = !this.useTheme ? flatColors : gradientColors;
       return this.data
         ? this.data.map((e) => {
-            const num = dayjs().diff(dayjs(e.date), "day");
+            let num = 0;
+            let now = dayjs();
+            let target = dayjs(e.date);
+            switch (e.repeat) {
+              case "none":
+                num = dayjs().diff(target, "day");
+                break;
+              case "year":
+                if (now.isBefore(target.set("year", now.year())))
+                  num = dayjs().diff(target, "day");
+                else
+                  num = dayjs().diff(
+                    target.set("year", now.year()).add(1, "year"),
+                    "day"
+                  );
+                break;
+              case "month":
+                if (
+                  now.isBefore(
+                    target.set("year", now.year()).set("month", now.month())
+                  )
+                )
+                  num = dayjs().diff(target, "day");
+                else
+                  num = dayjs().diff(
+                    target
+                      .set("year", now.year())
+                      .set("month", now.month())
+                      .add(1, "month"),
+                    "day"
+                  );
+                break;
+              case "week":
+                if (target.isoWeekday() > now.isoWeekday())
+                  num = target.isoWeekday() - now.isoWeekday();
+                else num = target.isoWeekday() - now.isoWeekday() + 7;
+                break;
+              default:
+                break;
+            }
             let tmp = -1;
             levels.forEach((l, i) => {
               if (l - Math.abs(num) > 0 && tmp === -1) tmp = i;
@@ -108,7 +153,14 @@ export default {
             return {
               ...e,
               num: Math.abs(num),
-              status: num === 0 ? "now" : num > 0 ? "after" : "before",
+              status:
+                num === 0
+                  ? "now"
+                  : e.repeat != "none"
+                  ? "before"
+                  : num > 0
+                  ? "after"
+                  : "before",
               background: colors[level],
             };
           })
@@ -195,9 +247,12 @@ span.title {
 }
 .item-content .name {
   font-weight: bold;
+  font-size: 24px;
   max-width: 150px;
   overflow: hidden;
   text-overflow: ellipsis;
+  line-height: 100%;
+  padding: 0 5px;
 }
 .item-content .num {
   font-weight: bold;

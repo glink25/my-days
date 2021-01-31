@@ -11,6 +11,7 @@ import {
   DatetimePicker,
   RadioGroup,
   Radio,
+  Notify,
 } from "vant";
 import "@vant/touch-emulator";
 import "vant/lib/button/style";
@@ -21,8 +22,9 @@ import "vant/lib/switch/style";
 import "vant/lib/datetime-picker/style";
 import "vant/lib/radio-group/style";
 import "vant/lib/radio/style";
+import "vant/lib/notify/style";
 import "vant/lib/icon/local.css";
-import './registerServiceWorker'
+import "./registerServiceWorker";
 Vue.config.productionTip = false;
 [
   SwipeCell,
@@ -35,7 +37,11 @@ Vue.config.productionTip = false;
   DatetimePicker,
   RadioGroup,
   Radio,
+  Notify,
 ].forEach((e) => Vue.use(e));
 new Vue({
   render: (h) => h(App),
+  beforeCreate() {
+    Vue.prototype.$bus = this;
+  },
 }).$mount("#app");

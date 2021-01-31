@@ -6,9 +6,18 @@
       @delete="delDay"
       :use-theme="useTheme"
     />
-    <Footer :use-theme.sync="useTheme" @showAdd="showAddDay = true" />
-    <DayInfo :day="currentDay" :visible.sync="showDayInfo" />
-    <AddDay :visible.sync="showAddDay" @add="addDay" />
+    <Footer :use-theme.sync="useTheme" @showAdd="showAdd" />
+    <DayInfo
+      :day="currentDay"
+      :visible.sync="showDayInfo"
+      @edit="onEditClick"
+    />
+    <AddDay
+      :visible.sync="showAddDay"
+      :config="dayConfig"
+      @add="addDay"
+      @edit="editDay"
+    />
   </div>
 </template>
 <script>
@@ -27,10 +36,16 @@ export default {
       currentDay: {},
       useTheme: this.getTheme(),
       showAddDay: false,
+      dayConfig: {},
+      shouldRefresh: 1,
     };
   },
   mounted() {
     this.getDays();
+    const that = this;
+    this.$bus.$on("refresh", function() {
+      if (that.shouldRefresh % (24 * 60 * 60) === 1) that.getDays();
+    });
     // this.useTheme = this.getTheme();
   },
   watch: {
@@ -47,9 +62,23 @@ export default {
     getDays() {
       this.allDays = this.findDays();
     },
+    showAdd() {
+      this.dayConfig = {};
+      this.showAddDay = true;
+    },
     addDay(val) {
       this.insertDay(val);
       this.getDays();
+    },
+    editDay(day) {
+      this.replaceDay(this.dayConfig.id, day);
+      this.getDays();
+      this.dayConfig = {};
+    },
+    onEditClick(day) {
+      this.showDayInfo = false;
+      this.dayConfig = day;
+      this.showAddDay = true;
     },
     delDay(val) {
       this.removeDay(val);
