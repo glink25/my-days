@@ -5,7 +5,7 @@
         <div class="info-body">
           <div class="info-item info-name allow-select">{{ day.name }}</div>
           <div class="info-item info-comment allow-select">
-            {{ JSON.stringify(day) }}
+            {{ day.comment }}
           </div>
           <div class="info-item info-date">{{ day.date }}</div>
         </div>

@@ -22,8 +22,8 @@
 import Progress from "./modules/Progress";
 import Digital from "./modules/Digital";
 import dayjs from "dayjs";
-const weekday = require("dayjs/plugin/weekday");
-dayjs.extend(weekday);
+const isoWeek = require("dayjs/plugin/isoWeek");
+dayjs.extend(isoWeek);
 
 export default {
   name: "TimeZone",
@@ -48,8 +48,8 @@ export default {
         .diff(dayjs(), "day");
     },
     weekLeft() {
-      if (!this.isLeft) return dayjs().weekday();
-      return 7 - dayjs().weekday();
+      if (!this.isLeft) return dayjs().isoWeekday();
+      return 7 - dayjs().isoWeekday();
     },
     monthLeft() {
       if (!this.isLeft) return dayjs().diff(dayjs().startOf("month"), "day");

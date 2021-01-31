@@ -1,6 +1,15 @@
 <template>
   <div class="progress-wrapper">
-    <canvas id="canvas" ref="canvas" style="zoom:0.5" class="canvas"></canvas>
+    <div class="canvas-wrap">
+      <canvas
+        id="canvas"
+        ref="canvas"
+        width="400"
+        height="400"
+        style="zoom:0.5"
+        class="canvas"
+      ></canvas>
+    </div>
     <div class="year-bar" :style="{ backgroundColor: yearBgColor }">
       <div
         class="year-bar-inside"
@@ -11,7 +20,7 @@
 </template>
 <script>
 const width = 400;
-const height = 400;
+const height = width;
 const padding = 53;
 const weight = 45;
 const center = [width / 2, height / 2];
@@ -47,19 +56,19 @@ export default {
   },
   data() {
     return {
-      yearWidth: "0",
+      yearWidth: "8%",
       yearColor: YEAR_COLORS[0],
       yearBgColor: YEAR_BG_COLORS[0],
     };
   },
   mounted() {
-    const canvas = this.$refs.canvas;
-    canvas.width = width;
-    canvas.height = height;
+    // const canvas = this.$refs.canvas;
+    // canvas.width = width;
+    // canvas.height = height;
     for (let i = 0; i < 3; i++) {
       this.draw(i);
     }
-    this.yearWidth = `${this.year * 100}%`;
+    this.yearWidth = `${(this.year < 0.1 ? 0.1 : this.year) * 100}%`;
     this.yearColor = YEAR_COLOR;
     this.yearBgColor = YEAR_BG_COLOR;
     this.animatedDraw();
@@ -71,6 +80,10 @@ export default {
       context.strokeStyle = value ? COLORS[index] : BG_COLORS[index];
       context.lineCap = "round";
       context.lineWidth = weight;
+      // context.shadowOffsetX = 15; // 阴影Y轴偏移
+      // context.shadowOffsetY = 15; // 阴影X轴偏移
+      // context.shadowBlur = 14; // 模糊尺寸
+      // context.shadowColor = "rgba(0, 0, 0, 0.5)"; // 颜色
       context.beginPath();
       context.moveTo(...getStart(index));
       context.arc(...getEnd(index, value));
@@ -80,13 +93,18 @@ export default {
       let starts = [0, 0, 0];
       const targets = [this.month * 360, this.week * 360, this.day * 360];
       const that = this;
+      let ani = null;
+      const offset = 0.01;
       function step() {
+        console.log(starts[0], targets[0]);
         if (
-          starts[0] >= targets[0] &&
-          starts[1] >= targets[1] &&
-          starts[2] >= targets[2]
-        )
+          starts[0] + offset >= targets[0] &&
+          starts[1] + offset >= targets[1] &&
+          starts[2] + offset >= targets[2]
+        ) {
+          window.cancelAnimationFrame(ani);
           return;
+        }
         targets.forEach((target, index) => {
           let angle = starts[index];
           if (angle >= target) return;
@@ -94,7 +112,7 @@ export default {
           if (angle < target / 2) starts[index] += angle / 5 + 0.1;
           else starts[index] += (target - angle) * 0.1;
         });
-        window.requestAnimationFrame(step);
+        ani = window.requestAnimationFrame(step);
       }
       step();
     },
@@ -107,6 +125,10 @@ export default {
   display: flex;
   flex-flow: column nowrap;
   justify-content: space-between;
+}
+.canvas-wrap {
+  width: 200px;
+  height: 200px;
 }
 .canvas {
   z-index: 10;

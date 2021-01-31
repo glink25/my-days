@@ -54,6 +54,9 @@ export default {
   flex-flow: column nowrap;
   justify-content: center;
 }
+.option {
+  padding-bottom: 10px;
+}
 .option-outer,
 .option-inner {
   display: flex;
@@ -84,7 +87,7 @@ export default {
   border-radius: 16px;
 }
 .van-icon {
-  font-size: 24px;
+  font-size: 20px;
 }
 .copy-right {
   width: 100%;
