@@ -5,7 +5,7 @@ module.exports = {
     appleMobileWebAppCapable: "yes",
     name: "我的日子",
     iconPaths: {
-      appleTouchIcon: "https://glink25.gitee.io/img/icons/128.png",
+      appleTouchIcon: "https://imgchr.com/i/yEfDMV",
       favicon32: null,
       favicon16: null,
       maskIcon: null,
