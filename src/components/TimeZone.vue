@@ -25,6 +25,12 @@ import dayjs from "dayjs";
 const isoWeek = require("dayjs/plugin/isoWeek");
 dayjs.extend(isoWeek);
 
+function pctLimit(val) {
+  if (val > 1) return 1;
+  if (val < 0) return 0;
+  return val;
+}
+
 export default {
   name: "TimeZone",
   components: { Progress, Digital },
@@ -56,10 +62,13 @@ export default {
     },
     monthLeft() {
       if (this.shouldRefresh < 0) return null;
-      if (!this.isLeft) return dayjs().diff(dayjs().startOf("month"), "day");
-      return dayjs()
-        .endOf("month")
-        .diff(dayjs(), "day");
+      if (!this.isLeft)
+        return dayjs().diff(dayjs().startOf("month"), "day") + 1;
+      return (
+        dayjs()
+          .endOf("month")
+          .diff(dayjs(), "day") - 1
+      );
     },
     // progress
     yearPct() {
@@ -67,22 +76,22 @@ export default {
       const mount = dayjs()
         .endOf("year")
         .diff(dayjs().startOf("year"), "day");
-      return 1 - this.yearLeft / mount;
+      return pctLimit(1 - this.yearLeft / mount);
     },
     monthPct() {
       if (this.shouldRefresh < 0) return null;
       const mount = dayjs()
         .endOf("month")
         .diff(dayjs().startOf("month"), "day");
-      return 1 - this.monthLeft / mount;
+      return pctLimit(1 - this.monthLeft / mount);
     },
     weekPct() {
       if (this.shouldRefresh < 0) return null;
-      return 1 - this.weekLeft / 7;
+      return pctLimit(1 - this.weekLeft / 7);
     },
     dayPct() {
       if (this.shouldRefresh < 0) return null;
-      return this.passSec / (24 * 60 * 60);
+      return pctLimit(this.passSec / (24 * 60 * 60));
     },
   },
   watch: {

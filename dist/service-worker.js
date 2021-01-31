@@ -14,7 +14,7 @@
 importScripts("https://storage.googleapis.com/workbox-cdn/releases/4.3.1/workbox-sw.js");
 
 importScripts(
-  "/precache-manifest.f745e546c85f1a904cf74d1c7d1c414b.js"
+  "/precache-manifest.208e00e649a668e15cf3aa92514f7c89.js"
 );
 
 workbox.core.setCacheNameDetails({prefix: "mydays"});
