@@ -5,7 +5,7 @@ module.exports = {
     appleMobileWebAppCapable: "yes",
     name: "我的日子",
     iconPaths: {
-      appleTouchIcon: "https://imgchr.com/i/yEfDMV",
+      appleTouchIcon: null,
       favicon32: null,
       favicon16: null,
       maskIcon: null,
