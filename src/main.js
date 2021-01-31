@@ -12,6 +12,7 @@ import {
   RadioGroup,
   Radio,
   Notify,
+  Overlay,
 } from "vant";
 import "@vant/touch-emulator";
 import "vant/lib/button/style";
@@ -23,6 +24,7 @@ import "vant/lib/datetime-picker/style";
 import "vant/lib/radio-group/style";
 import "vant/lib/radio/style";
 import "vant/lib/notify/style";
+import "vant/lib/overlay/style";
 import "vant/lib/icon/local.css";
 import "./registerServiceWorker";
 Vue.config.productionTip = false;
@@ -38,6 +40,7 @@ Vue.config.productionTip = false;
   RadioGroup,
   Radio,
   Notify,
+  Overlay,
 ].forEach((e) => Vue.use(e));
 new Vue({
   render: (h) => h(App),
