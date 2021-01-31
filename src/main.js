@@ -22,6 +22,7 @@ import "vant/lib/datetime-picker/style";
 import "vant/lib/radio-group/style";
 import "vant/lib/radio/style";
 import "vant/lib/icon/local.css";
+import './registerServiceWorker'
 Vue.config.productionTip = false;
 [
   SwipeCell,

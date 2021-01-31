@@ -96,7 +96,6 @@ export default {
       let ani = null;
       const offset = 0.01;
       function step() {
-        console.log(starts[0], targets[0]);
         if (
           starts[0] + offset >= targets[0] &&
           starts[1] + offset >= targets[1] &&
