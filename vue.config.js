@@ -1,6 +1,7 @@
 module.exports = {
   pwa: {
     themeColor: "#FFFFFF",
-    appleMobileWebAppStatusBarStyle: "black",
+    appleMobileWebAppStatusBarStyle: "black-translucent",
+    name: "mydays",
   },
 };
